@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Inter:wght@300;400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --ink:   #0D0D0D;
+      --white: #FAFAF8;
+      --smoke: #F0EDE8;
+      --dust:  #C8C3BB;
+      --mid:   #6B6560;
+      --gold:  #A8956A;
+      --gap:   10px;
+    }
+    html { font-size: 16px; }
+    body {
+      background: var(--white);
+      color: var(--ink);
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.6rem 4rem;
+      background: rgba(250,250,248,0.93);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--smoke);
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300; font-size: 1rem;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--ink); text-decoration: none;
+    }
+    .nav-tabs { display: flex; gap: 0.2rem; }
+    .tab-btn {
+      font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--mid); background: none; border: none; cursor: pointer;
+      padding: 0.4rem 1rem; transition: color 0.2s;
+      font-family: 'Inter', sans-serif; font-weight: 300; position: relative;
+    }
+    .tab-btn::after {
+      content: ''; position: absolute; bottom: -2px; left: 1rem; right: 1rem;
+      height: 1px; background: var(--ink);
+      transform: scaleX(0); transition: transform 0.25s;
+    }
+    .tab-btn:hover { color: var(--ink); }
+    .tab-btn.active { color: var(--ink); }
+    .tab-btn.active::after { transform: scaleX(1); }
+
+    /* ── INTRO ── */
+    .intro { padding: 14rem 4rem 6rem; max-width: 720px; }
+    .intro-name {
+      font-size: 0.68rem; letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 1.8rem;
+    }
+    .intro-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300; font-size: clamp(2.2rem, 3.5vw, 3.2rem);
+      line-height: 1.15; margin-bottom: 1.8rem; white-space: pre-line;
+    }
+    .intro-body { font-size: 0.9rem; line-height: 1.85; color: var(--mid); max-width: 52ch; }
+
+    /* ── DIVIDER ── */
+    .divider { margin: 0 4rem; border: none; border-top: 1px solid var(--dust); }
+
+    /* ── PANELS ── */
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    /* ── WORK ── */
+    .films { padding: 5rem 4rem 8rem; }
+    .section-label {
+      font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--dust); margin-bottom: 3rem;
+    }
+    .films-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
+    .film-card { display: flex; flex-direction: column; gap: 0.8rem; }
+    .film-thumb {
+      aspect-ratio: 16/9; background: var(--smoke);
+      overflow: hidden; position: relative;
+    }
+    .film-thumb img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      transition: transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94);
+    }
+    .film-card:hover .film-thumb img { transform: scale(1.04); }
+    .thumb-placeholder {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .thumb-placeholder span {
+      font-size: 0.58rem; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--dust);
+    }
+    .film-brand {
+      font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 0.25rem;
+    }
+    .film-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem; font-weight: 300; color: var(--ink); line-height: 1.3;
+    }
+    .film-meta { font-size: 0.72rem; color: var(--dust); margin-top: 0.2rem; }
+
+    /* ── IA MASONRY ── */
+    .ia-section { padding: 5rem 4rem 8rem; }
+
+    .masonry {
+      columns: 3;
+      column-gap: var(--gap);
+    }
+
+    .masonry-item {
+      break-inside: avoid;
+      margin-bottom: var(--gap);
+      background: var(--smoke);
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* tailles : contrôlées par column-span + padding-bottom trick */
+    .masonry-item img,
+    .masonry-item video {
+      width: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    /* small  → carré */
+    .masonry-item.small img,
+    .masonry-item.small video { aspect-ratio: 1/1; }
+
+    /* medium → 16:9 */
+    .masonry-item.medium img,
+    .masonry-item.medium video { aspect-ratio: 16/9; }
+
+    /* large  → 4:3 portrait-ish */
+    .masonry-item.large img,
+    .masonry-item.large video { aspect-ratio: 3/4; }
+
+    /* wide   → pleine largeur sur 2 colonnes */
+    .masonry-item.wide {
+      column-span: all;
+    }
+    .masonry-item.wide img,
+    .masonry-item.wide video { aspect-ratio: 21/9; }
+
+    /* hover overlay subtil */
+    .masonry-item::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: rgba(13,13,13,0);
+      transition: background 0.3s;
+      pointer-events: none;
+    }
+    .masonry-item:hover::after { background: rgba(13,13,13,0.06); }
+
+    /* play icon sur les vidéos */
+    .masonry-item.has-video::before {
+      content: '▶';
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 1.4rem; color: rgba(255,255,255,0.75);
+      z-index: 1; pointer-events: none;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      opacity: 0; transition: opacity 0.25s;
+    }
+    .masonry-item.has-video:hover::before { opacity: 1; }
+
+    /* placeholder */
+    .masonry-placeholder {
+      width: 100%; display: flex;
+      align-items: center; justify-content: center;
+      background: var(--smoke);
+    }
+    .masonry-placeholder span {
+      font-size: 0.58rem; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--dust);
+      padding: 2rem;
+    }
+    .masonry-placeholder.small  { aspect-ratio: 1/1; }
+    .masonry-placeholder.medium { aspect-ratio: 16/9; }
+    .masonry-placeholder.large  { aspect-ratio: 3/4; }
+    .masonry-placeholder.wide   { aspect-ratio: 21/9; }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 2rem 4rem; border-top: 1px solid var(--smoke);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-copy { font-size: 0.68rem; color: var(--dust); }
+    .footer-email {
+      font-size: 0.72rem; color: var(--mid);
+      text-decoration: none; transition: color 0.2s;
+    }
+    .footer-email:hover { color: var(--ink); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 1.2rem 2rem; }
+      .intro, .films, .ia-section { padding-left: 2rem; padding-right: 2rem; }
+      .divider { margin: 0 2rem; }
+      .films-grid { grid-template-columns: repeat(2, 1fr); }
+      .masonry { columns: 2; }
+      footer { padding: 1.5rem 2rem; }
+    }
+    @media (max-width: 560px) {
+      .intro { padding-top: 10rem; }
+      .films-grid { grid-template-columns: 1fr; }
+      .masonry { columns: 1; }
+      .masonry-item.wide img,
+      .masonry-item.wide video { aspect-ratio: 16/9; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="#" class="nav-logo" id="nav-logo">—</a>
+    <div class="nav-tabs">
+      <button class="tab-btn active" data-tab="work">Work</button>
+      <button class="tab-btn" data-tab="ia">IA</button>
+    </div>
+  </nav>
+
+  <div class="intro">
+    <p class="intro-name" id="intro-name">—</p>
+    <h1 class="intro-title" id="intro-titre">—</h1>
+    <p class="intro-body" id="intro-texte">—</p>
+  </div>
+
+  <hr class="divider" />
+
+  <div class="panel active" id="panel-work">
+    <div class="films">
+      <p class="section-label">Films</p>
+      <div class="films-grid" id="films-grid"></div>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-ia">
+    <div class="ia-section">
+      <p class="section-label">IA</p>
+      <div class="masonry" id="ia-masonry"></div>
+    </div>
+  </div>
+
+  <footer>
+    <span class="footer-copy" id="footer-copy">—</span>
+    <a class="footer-email" id="footer-email" href="#">—</a>
+  </footer>
+
+  <script src="content.js"></script>
+  <script>
+    // ── Inject identité ────────────────────────────────────
+    document.title = CONFIG.nom + " — Post-Production";
+    document.getElementById('nav-logo').textContent = CONFIG.nom;
+    document.getElementById('intro-name').textContent = CONFIG.metier;
+    document.getElementById('intro-titre').textContent = CONFIG.intro.titre;
+    document.getElementById('intro-texte').textContent = CONFIG.intro.texte;
+    document.getElementById('footer-copy').textContent = "© " + new Date().getFullYear() + " " + CONFIG.nom;
+    const emailEl = document.getElementById('footer-email');
+    emailEl.textContent = CONFIG.email;
+    emailEl.href = "mailto:" + CONFIG.email;
+
+    // ── Films ──────────────────────────────────────────────
+    const filmsGrid = document.getElementById('films-grid');
+    CONFIG.films.forEach(film => {
+      const thumb = film.vignette
+        ? `<img src="${film.vignette}" alt="${film.titre}" />`
+        : `<div class="thumb-placeholder"><span>Vignette à ajouter</span></div>`;
+      filmsGrid.innerHTML += `
+        <div class="film-card">
+          <div class="film-thumb">${thumb}</div>
+          <div>
+            <p class="film-brand">${film.marque}</p>
+            <p class="film-title">${film.titre}</p>
+            <p class="film-meta">${film.meta}</p>
+          </div>
+        </div>`;
+    });
+
+    // ── IA Masonry ─────────────────────────────────────────
+    const masonry = document.getElementById('ia-masonry');
+    CONFIG.ia_media.forEach(item => {
+      const taille = item.taille || 'medium';
+      let inner = '';
+
+      if (item.src) {
+        if (item.type === 'video') {
+          inner = `<video src="${item.src}" muted loop playsinline preload="metadata"></video>`;
+        } else {
+          inner = `<img src="${item.src}" alt="" loading="lazy" />`;
+        }
+      } else {
+        inner = `<div class="masonry-placeholder ${taille}"><span>Média à ajouter</span></div>`;
+      }
+
+      const extraClass = item.type === 'video' ? ' has-video' : '';
+      masonry.innerHTML += `<div class="masonry-item ${taille}${extraClass}">${inner}</div>`;
+    });
+
+    // Lecture vidéo au hover
+    document.querySelectorAll('.masonry-item.has-video').forEach(item => {
+      const video = item.querySelector('video');
+      if (!video) return;
+      item.addEventListener('mouseenter', () => video.play());
+      item.addEventListener('mouseleave', () => { video.pause(); video.currentTime = 0; });
+    });
+
+    // ── Tabs ───────────────────────────────────────────────
+    document.querySelectorAll('.tab-btn').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    });
+  </script>
+
+</body>
+</html>
