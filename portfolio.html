@@ -142,32 +142,16 @@
       position: relative;
     }
 
-    /* tailles : contrôlées par column-span + padding-bottom trick */
+    /* Images et vidéos en taille naturelle — pas de crop */
     .masonry-item img,
     .masonry-item video {
       width: 100%;
+      height: auto;
       display: block;
-      object-fit: cover;
     }
 
-    /* small  → carré */
-    .masonry-item.small img,
-    .masonry-item.small video { aspect-ratio: 1/1; }
-
-    /* medium → 16:9 */
-    .masonry-item.medium img,
-    .masonry-item.medium video { aspect-ratio: 16/9; }
-
-    /* large  → 4:3 portrait-ish */
-    .masonry-item.large img,
-    .masonry-item.large video { aspect-ratio: 3/4; }
-
-    /* wide   → pleine largeur sur 2 colonnes */
-    .masonry-item.wide {
-      column-span: all;
-    }
-    .masonry-item.wide img,
-    .masonry-item.wide video { aspect-ratio: 21/9; }
+    /* wide = pleine largeur */
+    .masonry-item.wide { column-span: all; }
 
     /* hover overlay subtil */
     .masonry-item::after {
@@ -190,22 +174,6 @@
       opacity: 0; transition: opacity 0.25s;
     }
     .masonry-item.has-video:hover::before { opacity: 1; }
-
-    /* placeholder */
-    .masonry-placeholder {
-      width: 100%; display: flex;
-      align-items: center; justify-content: center;
-      background: var(--smoke);
-    }
-    .masonry-placeholder span {
-      font-size: 0.58rem; letter-spacing: 0.18em;
-      text-transform: uppercase; color: var(--dust);
-      padding: 2rem;
-    }
-    .masonry-placeholder.small  { aspect-ratio: 1/1; }
-    .masonry-placeholder.medium { aspect-ratio: 16/9; }
-    .masonry-placeholder.large  { aspect-ratio: 3/4; }
-    .masonry-placeholder.wide   { aspect-ratio: 21/9; }
 
     /* ── FOOTER ── */
     footer {
