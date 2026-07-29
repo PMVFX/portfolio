@@ -15,7 +15,7 @@ const CONFIG = {
     texte: "Chaque film a ses imprévus. Ce qu'on appelle expérience, c'est simplement avoir déjà été là — et savoir, sans hésiter, quel chemin prendre."
   },
 
-  // --- FILMS (onglet Work) ---
+
   films: [
     { marque: "Dior Beauty",    titre: "Fond de teint Forever",    meta: "2024 — TV 30s",       vignette: "images/film-01.jpg" },
     { marque: "Chanel",         titre: "N°5 — Film institutionnel", meta: "2024 — Digital",      vignette: "images/film-02.jpg" },
