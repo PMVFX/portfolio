@@ -11,7 +11,6 @@ const CONFIG = {
 
   // --- TEXTE D'INTRO ---
   intro: {
-    titre: "Patrick Mazeirat",
     texte: "Chaque film a ses imprévus. Ce qu'on appelle expérience, c'est simplement avoir déjà été là — et savoir, sans hésiter, quel chemin prendre."
   },
 
