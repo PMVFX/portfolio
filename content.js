@@ -11,8 +11,8 @@ const CONFIG = {
 
   // --- TEXTE D'INTRO ---
   intro: {
-    titre: "Je pilote la post-production\nde films cosmétiques et luxe.",
-    texte: "De la réception des rushes à la livraison des masters, je coordonne les équipes techniques, suis l'étalonnage, gère les VFX et orchestre les livraisons multi-formats. Mon rôle : que rien ne se perde entre le tournage et la diffusion."
+    titre: "Post-production — Luxe & Cosmétique.",
+    texte: "Chaque film a ses imprévus. Ce qu'on appelle expérience, c'est simplement avoir déjà été là — et savoir, sans hésiter, quel chemin prendre."
   },
 
   // --- FILMS (onglet Work) ---
