@@ -106,6 +106,8 @@
       opacity: 0; transition: opacity 0.25s;
     }
     .film-thumb.has-video:hover::before { opacity: 1; }
+    .film-thumb.playing::before { content: '⏸'; opacity: 1; }
+    .film-thumb.playing { outline: 2px solid var(--gold); }
     .thumb-placeholder {
       position: absolute; inset: 0;
       display: flex; align-items: center; justify-content: center;
@@ -310,12 +312,36 @@
         </div>`;
     });
 
-    // Lecture vidéo au hover — films Work
+    // Lecture vidéo au clic — films Work
     document.querySelectorAll('.film-thumb.has-video').forEach(thumb => {
       const video = thumb.querySelector('video');
       if (!video) return;
+      // Hover : preview silencieux
       thumb.addEventListener('mouseenter', () => video.play());
-      thumb.addEventListener('mouseleave', () => { video.pause(); video.currentTime = 0; });
+      thumb.addEventListener('mouseleave', () => {
+        if (!thumb.classList.contains('playing')) {
+          video.pause();
+          video.currentTime = 0;
+        }
+      });
+      // Clic : lecture plein écran avec son
+      thumb.addEventListener('click', () => {
+        if (thumb.classList.contains('playing')) {
+          video.pause();
+          video.muted = true;
+          thumb.classList.remove('playing');
+        } else {
+          // Stoppe toutes les autres vidéos
+          document.querySelectorAll('.film-thumb.playing').forEach(other => {
+            const v = other.querySelector('video');
+            if (v) { v.pause(); v.muted = true; v.currentTime = 0; }
+            other.classList.remove('playing');
+          });
+          video.muted = false;
+          video.play();
+          thumb.classList.add('playing');
+        }
+      });
     });
 
     // ── IA Masonry ─────────────────────────────────────────
