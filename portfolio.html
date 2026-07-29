@@ -90,11 +90,22 @@
       aspect-ratio: 16/9; background: var(--smoke);
       overflow: hidden; position: relative;
     }
-    .film-thumb img {
+    .film-thumb img, .film-thumb video {
       width: 100%; height: 100%; object-fit: cover; display: block;
       transition: transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94);
     }
-    .film-card:hover .film-thumb img { transform: scale(1.04); }
+    .film-card:hover .film-thumb img,
+    .film-card:hover .film-thumb video { transform: scale(1.04); }
+    .film-thumb.has-video::before {
+      content: '▶';
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 1.4rem; color: rgba(255,255,255,0.75);
+      z-index: 1; pointer-events: none;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      opacity: 0; transition: opacity 0.25s;
+    }
+    .film-thumb.has-video:hover::before { opacity: 1; }
     .thumb-placeholder {
       position: absolute; inset: 0;
       display: flex; align-items: center; justify-content: center;
@@ -277,18 +288,34 @@
     // ── Films ──────────────────────────────────────────────
     const filmsGrid = document.getElementById('films-grid');
     CONFIG.films.forEach(film => {
-      const thumb = film.vignette
-        ? `<img src="${film.vignette}" alt="${film.titre}" />`
-        : `<div class="thumb-placeholder"><span>Vignette à ajouter</span></div>`;
+      let media = '';
+      if (film.vignette) {
+        if (film.type === 'video') {
+          media = `<video src="${film.vignette}" muted loop playsinline preload="metadata"></video>`;
+        } else {
+          media = `<img src="${film.vignette}" alt="${film.titre}" loading="lazy" />`;
+        }
+      } else {
+        media = `<div class="thumb-placeholder"><span>Vignette à ajouter</span></div>`;
+      }
+      const isVideo = film.type === 'video' ? ' has-video' : '';
       filmsGrid.innerHTML += `
         <div class="film-card">
-          <div class="film-thumb">${thumb}</div>
+          <div class="film-thumb${isVideo}">${media}</div>
           <div>
             <p class="film-brand">${film.marque}</p>
             <p class="film-title">${film.titre}</p>
-            <p class="film-meta">${film.meta}</p>
+            ${film.meta ? `<p class="film-meta">${film.meta}</p>` : ''}
           </div>
         </div>`;
+    });
+
+    // Lecture vidéo au hover — films Work
+    document.querySelectorAll('.film-thumb.has-video').forEach(thumb => {
+      const video = thumb.querySelector('video');
+      if (!video) return;
+      thumb.addEventListener('mouseenter', () => video.play());
+      thumb.addEventListener('mouseleave', () => { video.pause(); video.currentTime = 0; });
     });
 
     // ── IA Masonry ─────────────────────────────────────────
