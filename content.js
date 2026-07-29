@@ -14,5 +14,13 @@ const CONFIG = {
     { marque: "Nissan",                 titre: "Juke",          vignette: "images/Nissan_Juke.mp4",      type: "video" },
     { marque: "Valentino",              titre: "Roma",          vignette: "images/Valentino_Roma.mp4",   type: "video" }
   ],
-  ia_media: []
+  ia_media: [
+    { type: "image", src: "images/ia-beaute.jpg",  taille: "large"  },
+    { type: "image", src: "images/ia-mystic.jpg",  taille: "large"  },
+    { type: "image", src: "images/ia-corteiz.jpg", taille: "small"  },
+    { type: "image", src: "images/ia-flux.jpg",    taille: "wide"   },
+    { type: "image", src: "images/ia-reve.jpg",    taille: "small"  },
+    { type: "image", src: "images/ia-gpt.jpg",     taille: "medium" },
+    { type: "image", src: "images/ia-mode.jpg",    taille: "wide"   }
+  ]
 };
