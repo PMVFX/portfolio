@@ -6,11 +6,12 @@ const CONFIG = {
 
   // --- TON IDENTITÉ ---
   nom: "Patrick Mazeirat",
-  email: "pm (.) vfx @ mailfence.com",
+  email: "pm.vfx@mailfence.com",
   metier: "Post-Producteur freelance",
 
   // --- TEXTE D'INTRO ---
   intro: {
+    titre: "Post-production — Luxe & Cosmétique.",
     texte: "Chaque film a ses imprévus. Ce qu'on appelle expérience, c'est simplement avoir déjà été là — et savoir, sans hésiter, quel chemin prendre."
   },
 
