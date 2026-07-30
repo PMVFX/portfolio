@@ -129,20 +129,26 @@
     /* ── IA MASONRY ── */
     .ia-section { padding: 5rem 4rem 8rem; }
 
+    .masonry-wrap {
+      width: 800px;
+      max-width: 100%;
+    }
+
     .masonry {
       columns: 3;
       column-gap: var(--gap);
+      width: 800px;
+      max-width: 100%;
     }
 
     .masonry-item {
       break-inside: avoid;
       margin-bottom: var(--gap);
-      background: var(--smoke);
+      background: transparent;
       overflow: hidden;
       position: relative;
     }
 
-    /* Images et vidéos en taille naturelle — pas de crop */
     .masonry-item img,
     .masonry-item video {
       width: 100%;
@@ -150,10 +156,8 @@
       display: block;
     }
 
-    /* wide = pleine largeur */
     .masonry-item.wide { column-span: all; }
 
-    /* hover overlay subtil */
     .masonry-item::after {
       content: '';
       position: absolute; inset: 0;
@@ -163,7 +167,6 @@
     }
     .masonry-item:hover::after { background: rgba(13,13,13,0.06); }
 
-    /* play icon sur les vidéos */
     .masonry-item.has-video::before {
       content: '▶';
       position: absolute; top: 50%; left: 50%;
@@ -233,7 +236,9 @@
   <div class="panel" id="panel-ia">
     <div class="ia-section">
       <p class="section-label">IA</p>
-      <div class="masonry" id="ia-masonry"></div>
+      <div class="masonry-wrap">
+        <div class="masonry" id="ia-masonry"></div>
+      </div>
     </div>
   </div>
 
