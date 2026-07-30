@@ -139,6 +139,7 @@
       column-gap: var(--gap);
       width: 800px;
       max-width: 100%;
+      overflow: visible;
     }
 
     .masonry-item {
@@ -158,6 +159,16 @@
 
     .masonry-item.wide { column-span: all; }
 
+    .masonry-item {
+      transition: transform 0.35s cubic-bezier(0.25,0.46,0.45,0.94);
+      transform-origin: center center;
+      z-index: 0;
+    }
+    .masonry-item:hover {
+      transform: scale(1.06);
+      z-index: 10;
+    }
+
     .masonry-item::after {
       content: '';
       position: absolute; inset: 0;
@@ -165,7 +176,7 @@
       transition: background 0.3s;
       pointer-events: none;
     }
-    .masonry-item:hover::after { background: rgba(13,13,13,0.06); }
+    .masonry-item:hover::after { background: rgba(13,13,13,0.04); }
 
     .masonry-item.has-video::before {
       content: '▶';
